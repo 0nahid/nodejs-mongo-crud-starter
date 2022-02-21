@@ -9,6 +9,7 @@ const port = process.env.PORT || 5000;
 // id: crudserver
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
+const { ObjectID } = require("bson");
 const uri =
   "mongodb+srv://crudserver:rPX8HxW17qHxEZEt@cluster0.qbyvq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
@@ -25,16 +26,21 @@ client.connect((err) => {
       res.send(documents);
     });
   });
-
   // Post API
   app.post("/users", (req, res) => {
     // const newUser = req.body;
-    collection.insertOne(req.body, (err, result) => {res.send(result)})});
-    
+    collection.insertOne(req.body, (err, result) => {
+      res.json(result);
+    });
+  });
+
   // Delete API
 
   app.delete("/users/:id", (req, res) => {
-
+    const id = req.params.id;
+    collection.deleteOne({ _id: ObjectID(id) }, (err, result) => {
+      res.send(result);
+    });
   });
 
   // perform actions on the collection object
