@@ -18,6 +18,16 @@ const client = new MongoClient(uri, {
 });
 client.connect((err) => {
   const collection = client.db("personalDb").collection("user");
+  // GET API
+  app.get("/users", (req, res) => {
+    // const cursor = client.db("personalDb").collection("user").find();
+    const cursor = collection.find({});
+    cursor.toArray((err, documents) => {
+      res.send(documents);
+    });
+  });
+
+  // Post API
   app.post("/users", (req, res) => {
     const newUser = req.body;
     collection.insertOne(newUser, (err, result) => {
@@ -28,8 +38,10 @@ client.connect((err) => {
   // console.log("connected");
   // const user = { name: "John", email: "john@test.com", phone: "123456789" };
   // collection.insertOne(user).then((result) => console.log(result));
-    // client.close();
+  // client.close();
 });
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) =>
+  res.send({ status: `"Server is running successfully on port ${port}"` })
+);
 app.listen(port, () => console.log(`server is running on port ${port}`));
