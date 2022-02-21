@@ -26,6 +26,14 @@ client.connect((err) => {
       res.send(documents);
     });
   });
+  // GET Specific User
+  app.get("/users/:id", (req, res) => {
+    const id = req.params.id;
+    collection
+      .find({ _id: new ObjectID(id) })
+      .toArray((err, documents) => res.send(documents));
+  });
+
   // Post API
   app.post("/users", (req, res) => {
     // const newUser = req.body;
