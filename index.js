@@ -20,7 +20,6 @@ client.connect((err) => {
   const collection = client.db("personalDb").collection("user");
   // GET API
   app.get("/users", (req, res) => {
-    // const cursor = client.db("personalDb").collection("user").find();
     const cursor = collection.find({});
     cursor.toArray((err, documents) => {
       res.send(documents);
@@ -29,11 +28,15 @@ client.connect((err) => {
 
   // Post API
   app.post("/users", (req, res) => {
-    const newUser = req.body;
-    collection.insertOne(newUser, (err, result) => {
-      res.send(result);
-    });
+    // const newUser = req.body;
+    collection.insertOne(req.body, (err, result) => {res.send(result)})});
+    
+  // Delete API
+
+  app.delete("/users/:id", (req, res) => {
+
   });
+
   // perform actions on the collection object
   // console.log("connected");
   // const user = { name: "John", email: "john@test.com", phone: "123456789" };
